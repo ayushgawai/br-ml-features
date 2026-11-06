@@ -12,7 +12,7 @@ def event_type_counts(df: pd.DataFrame) -> pd.Series:
 
 
 def user_aggregates(df: pd.DataFrame) -> pd.DataFrame:
-    return df.groupby("user_id").agg(
+    return df.groupby("account_id").agg(
         events=("event_id", "count"),
         sessions=("session_id", "nunique"),
         revenue_usd=("revenue_usd", "sum"),
@@ -20,5 +20,5 @@ def user_aggregates(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def feature_matrix(df: pd.DataFrame) -> pd.DataFrame:
-    by_type = df.pivot_table(index="user_id", columns="event_type", values="event_id", aggfunc="count", fill_value=0)
+    by_type = df.pivot_table(index="account_id", columns="event_type", values="event_id", aggfunc="count", fill_value=0)
     return user_aggregates(df).join(by_type)
